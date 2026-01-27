@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bg3dhjd6brel1"]
+
+[ext_resource type="Script" uid="uid://dh33ptjduugfr" path="res://scene/pushable_mesh.gd" id="1_d8dhm"]
+[ext_resource type="Material" uid="uid://ccbbxiwylj2yy" path="res://scene/texture/orange.tres" id="2_h6iok"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_4a1xm"]
+material = ExtResource("2_h6iok")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_d8dhm"]
+
+[node name="Ball" type="RigidBody3D" unique_id=1176104569]
+mass = 5.0
+script = ExtResource("1_d8dhm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=217979936]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+mesh = SubResource("SphereMesh_4a1xm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=466610549]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+shape = SubResource("SphereShape3D_d8dhm")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1852622455]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D" unique_id=1402093717]
+transform = Transform3D(3.1, 0, 0, 0, 3.1, 0, 0, 0, 3.1, 0, 0, 0)
+shape = SubResource("SphereShape3D_d8dhm")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
