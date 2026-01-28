@@ -46,7 +46,7 @@ var move_speed := base_speed
 @onready var _camera = %Camera3D
 @onready var _skin = %SophiaSkin
 
-enum STATES {IDLE, MOVE, JUMP, SLIDE}
+enum STATES {IDLE, MOVE, FLY, SLIDE}
 var playerState : STATES = STATES.IDLE
 
 func _ready():
@@ -79,7 +79,7 @@ func _unhandled_input(event):
 func _physics_process(delta):
 	cameraRotation(delta)
 	move()
-	jump()
+	fly()
 	
 	# Передвижение персонажа учитывая его поворот
 	var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
@@ -129,14 +129,15 @@ func move():
 	if playerState == STATES.IDLE:
 		_skin.idle()
 
-func jump():
+func fly():
+	
 	if Input.is_action_just_pressed(input_jump) and is_on_floor():
-		if playerState != STATES.JUMP:
-			playerState = STATES.JUMP
-			print('jump')
 		velocity.y += jump_impulse #Добавляем значения импульса к вертикальной скорости игрока
-		
-	if playerState == STATES.JUMP:
+	if not is_on_floor():
+		if playerState != STATES.FLY:
+			playerState = STATES.FLY
+			print('fly')
+	if playerState == STATES.FLY:
 		if velocity.y < 0:
 			_skin.fall()
 		else: _skin.jump()
